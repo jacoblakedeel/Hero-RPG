@@ -32,6 +32,8 @@ class Hero:
     #     print("> ", end=' ')
     
 
+hero = Hero(10, 5)
+goblin = Goblin(6, 2)
 
 
 
@@ -58,8 +60,6 @@ class Goblin:
     #     print("> ", end=' ')
 
 
-hero = Hero(10, 5)
-goblin = Goblin(6, 2)
 
 
 
