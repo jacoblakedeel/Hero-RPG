@@ -35,17 +35,10 @@ class Hero(Character):
         print("You do {} damage to the goblin.".format(hero.power))
         if goblin.health <= 0:
                 print("The goblin is defeated.")
-
-
-    # def alive(self):
-    #     if self.health > 0:
-    #         return True
-    #     else:
-    #         return False
         
     
-    # def print_status_hero(self):
-    #     print(f"You have {hero.health} health and {hero.power} power.")
+    def print_status_hero(self):
+        print(f"You have {hero.health} health and {hero.power} power.")
 
 
 
@@ -58,11 +51,6 @@ class Goblin(Character):
         if hero.health <= 0:
                 print("You have been vanquished.")
     
-    # def alive(self):
-    #     if self.health > 0:
-    #         return True
-    #     else:
-    #         return False
 
     def print_status_goblin(self):
         print(f"The goblin has {goblin.health} health and {goblin.power} power.")
