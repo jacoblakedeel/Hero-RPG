@@ -7,12 +7,29 @@
 # 3. flee
 
 
-class Hero:
-    def __init__(self, health, power):
+
+class Character:
+    def __init__(self, name, health, power):
         self.health = health
         self.power = power
 
+    def alive(self):
+        if self.health > 0:
+            return True
+        else:
+            return False
 
+    def print_status_(self, name):
+        self.name = name
+        if self.name == "Hero":
+            print(f"You have {self.health} health and {self.power} power.")
+        elif self.name == 'Goblin':
+            print(f"The {self.name} has {self.power}.")
+        else:
+            print("Invalid Character Name")
+
+class Hero(Character):
+    
     def attack(self, goblin):
         goblin.health -= hero.power
         print("You do {} damage to the goblin.".format(hero.power))
@@ -20,22 +37,20 @@ class Hero:
                 print("The goblin is defeated.")
 
 
-    def if_hero_alive(self):
-        while hero.health > 0:
-            print(f"The hero remains valiant with {hero.health} health points.")
-            break
+    # def alive(self):
+    #     if self.health > 0:
+    #         return True
+    #     else:
+    #         return False
         
     
-    def print_status_hero(self):
-        print("You have {} health and {} power.".format(hero.health, hero.power))
+    # def print_status_hero(self):
+    #     print(f"You have {hero.health} health and {hero.power} power.")
 
 
 
 
-class Goblin:
-    def __init__(self, health, power):
-        self.health = health
-        self.power = power
+class Goblin(Character):
 
     def attack(self, hero):
         hero.health -= goblin.power
@@ -43,20 +58,17 @@ class Goblin:
         if hero.health <= 0:
                 print("You have been vanquished.")
     
-    def if_goblin_alive(self):
-        while goblin.health > 0:
-            print(f"The Goblin lives on with {goblin.health} health points.")
-            break
+    # def alive(self):
+    #     if self.health > 0:
+    #         return True
+    #     else:
+    #         return False
 
     def print_status_goblin(self):
-        print("The goblin has {} health and {} power.".format(goblin.health, goblin.power))
+        print(f"The goblin has {goblin.health} health and {goblin.power} power.")
 
-hero = Hero(10, 5)
-goblin = Goblin(6, 2)
-
-
-
-
+hero = Hero("Hero", 10, 5)
+goblin = Goblin("Goblin", 6, 2)
 
 
 
