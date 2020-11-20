@@ -6,6 +6,11 @@
 # 2. do nothing - in which case the goblin will attack him anyway
 # 3. flee
 
+import random
+
+
+
+
 
 class Character:
     def __init__(self, health, power):
@@ -21,7 +26,12 @@ class Character:
     def attack(self, enemy):
         enemy.health -= self.power
         if self.character_name == "hero":
-            print(f"You do {self.power} damage to the {enemy.character_name}.")
+            double_damage = random.randint(1, 11)
+            if double_damage > 8:
+                enemy.health -= self.power
+                print(f"You did double damage to the {enemy.character_name}")
+            else:
+                print(f"You do {self.power} damage to the {enemy.character_name}.")
         elif self.character_name == "goblin":
             print(f"The {self.character_name} does {self.power} damage to you.")
 
