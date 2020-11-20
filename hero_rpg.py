@@ -18,31 +18,31 @@ class Character:
         else:
             return False
 
-
-class Hero(Character):
-    def __init__(self, health, power):
-        super(Hero, self).__init__(health, power)
-
     def attack(self, enemy):
-        # Hero attacks goblin
         enemy.health -= self.power
+        if self.character_name == "hero":
+            print(f"You do {self.power} damage to the {enemy.character_name}.")
+        elif self.character_name == "goblin":
+            print(f"The {self.character_name} does {self.power} damage to you.")
 
 
     def print_status(self):
-        print(f"You have {self.health} health and {self.power} power.")
+        if self.character_name == "hero":
+            print(f"You have {self.health} health and {self.power} power.")
+        elif self.character_name == "goblin":
+            print(f"The {self.character_name} has {self.health} health and {self.power} power.")
+
+class Hero(Character):
+    def __init__(self, health, power):
+        self.character_name = "hero"
+        super(Hero, self).__init__(health, power)
+
         
 
 class Goblin(Character):
     def __init__(self, health, power):
+        self.character_name = "goblin"
         super(Goblin, self).__init__(health, power)
-
-    def attack(self, enemy):
-        # Hero attacks goblin
-        enemy.health -= self.power
-
-
-    def print_status(self):
-        print(f"The goblin has {self.health} health and {self.power} power.")
 
 
 def main():
@@ -62,7 +62,7 @@ def main():
         raw_input = input()
         if raw_input == "1":
             hero.attack(goblin)
-            print("You do {} damage to the goblin.".format(hero.power))
+            
             if not goblin.alive():
                 print("The goblin is dead.")
         elif raw_input == "2":
@@ -75,7 +75,7 @@ def main():
 
         if goblin.alive():
             goblin.attack(hero)
-            print("The goblin does {} damage to you.".format(goblin.power))
+            
             if not hero.alive():
                 print("You are dead.")
 
