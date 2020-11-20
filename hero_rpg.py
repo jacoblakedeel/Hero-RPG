@@ -13,9 +13,10 @@ import random
 
 
 class Character:
-    def __init__(self, health, power):
+    def __init__(self, character_name, health, power):
         self.health = health
         self.power = power
+        self.character_name = character_name
 
     def alive(self):
         if self.health > 0:
@@ -44,15 +45,15 @@ class Character:
 
 class Hero(Character):
     def __init__(self, health, power):
-        self.character_name = "hero"
-        super(Hero, self).__init__(health, power)
+        character_name = "hero"
+        super(Hero, self).__init__(character_name, health, power)
 
         
 
 class Goblin(Character):
     def __init__(self, health, power):
-        self.character_name = "goblin"
-        super(Goblin, self).__init__(health, power)
+        character_name = "goblin"
+        super(Goblin, self).__init__(character_name, health, power)
 
 
 def main():
