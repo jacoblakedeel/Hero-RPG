@@ -56,7 +56,7 @@ class Character:
 
     def print_status(self):
         if self.character_name == "hero":
-            print(f"You have {self.health} health and {self.power} power.")
+            print(f"You have {self.health} health, {self.power} power, {self.coins} coins, {self.armor} armor, and {self.evade} evade points.")
         elif self.character_name == "goblin":
             print(f"The {self.character_name} has {self.health} health and {self.power} power.")
         elif self.character_name == "shadow":
@@ -70,9 +70,32 @@ class Character:
 
 #CLASSES
 
+class Items:
+    def __init__(self, price):
+        self.price = price
+    
+    def super_tonic(self):
+
+        if hero.coins >= self.price:
+            if hero.health < 10:
+                hero.health = (10 - hero.health) + hero.health 
+                hero.coins -= self.price
+                hero.print_status
+            else:
+                print("You are already at maximum health")
+        else:
+            print("Not enough coins to purchase.")
+
+
+
 class Hero(Character):
-    def __init__(self, health, power):
+    def __init__(self, health, power, coins, armor, evade):
         character_name = "hero"
+        self.health = health
+        self.power = power
+        self.coins = coins
+        self.armor = armor
+        self.evade = evade
         super(Hero, self).__init__(character_name, health, power)
 
 
@@ -114,14 +137,24 @@ class Werewolf(Enemy):
         super(Werewolf, self).__init__(character_name, health, power, bounty)
 
 
+class Wizard(Enemy):
+    def __init__(self, health, power, bounty):
+        character_name = "wizard"
+        super(Wizard, self).__init__(character_name, health, power, bounty)
 
 #GAME
 
-hero = Hero(10, 5)
+hero = Hero(10, 5, 5, 2, 0)
 goblin = Goblin(6, 2, 5)
 medic = Medic(6, 5, 5)
 shadow = Shadow(1, 4, 8)
 zombie = Zombie(6, 1, 10)
+wizard = Wizard(8, 6, 10)
+
+# store = Store()
+super_tonic = Items(5)
+armor = Items(5)
+evade = Items(5)
 
 def main(enemy):
     
@@ -134,26 +167,58 @@ def main(enemy):
         print("What do you want to do?")
         print(f"1. fight {enemy.name}")
         print("2. do nothing")
-        print("3. flee")
+        print("3. shop at the store")
+        print("4. flee")
         print("> ", end=' ')
         raw_input = input()
         if raw_input == "1":
             hero.attack(enemy)
-            
             if not enemy.alive():
+                hero.coins += enemy.bounty
                 print(f"The {enemy.name} is dead. You collect {enemy.bounty} bounty coins!")
+            if enemy.alive():
+                enemy.attack(hero)
+                if not hero.alive():
+                    print("You are dead.")
+
         elif raw_input == "2":
             pass
         elif raw_input == "3":
+            print("Choose Item From Store")
+            print("=" * 20)
+            print("1. Super Tonic - Restores Hero Health to 10. Price: 5 Coins")
+            print("2. Armor - Adds 2 Armor Points. Price: 5 Coins")
+            print("3. Evade - Makes Enemy Attacks Less Likely to Do Damage. Price: 5 Coins")
+            print("")
+            print("What would you like to purchase?")
+            store_input = input()
+            if store_input == "1":
+                if hero.coins >= super_tonic.price:
+                    if hero.health < 10:
+                        hero.health = (10 - hero.health) + hero.health 
+                        hero.coins -= super_tonic.price
+                        hero.print_status
+                        
+                    else:
+                        print("You are already at maximum health")
+                else:
+                    print("Not enough coins to purchase.")
+
+            elif store_input == "2":
+                if hero.coins >= armor.price:
+                    hero.armor += 2
+                    hero.coins -= armor.price
+                else:
+                    print("Not enough coins to purchase.")
+            elif store_input == "3":
+                pass
+
+        elif raw_input == "4":
             print("Goodbye.")
             break
         else:
             print(f"Invalid input {raw_input}")
 
-        if enemy.alive():
-            enemy.attack(hero)
-            
-            if not hero.alive():
-                print("You are dead.")
+        
 
-main(medic)
+main(goblin)
