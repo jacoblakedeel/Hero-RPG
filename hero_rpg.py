@@ -25,10 +25,10 @@ class Character:
             return False
 
     def attack(self, enemy):
-        if enemy.character_name != "zombie":
+        if enemy.character_name != "zombie" or "shadow":
             enemy.health -= self.power
 
-        if self.character_name == "hero" and enemy.character_name != "zombie":
+        if self.character_name == "hero":
             double_damage = random.randint(1, 11)
             if double_damage > 8:
                 enemy.health -= self.power
@@ -37,23 +37,21 @@ class Character:
                 print(f"You do {self.power} damage to the {enemy.character_name}.")
 
         if enemy.character_name == "goblin":
-            print(f"The {self.character_name} does {self.power} damage to you.")
+            print(f"The {enemy.character_name} does {self.power} damage to you.")
 
         if enemy.character_name == "medic":
-            print(f"The {enemy.name} does {self.power} damage to you.")
+            print(f"The {enemy.name} does {enemy.power} damage to you.")
             recuperate = random.randint(1, 11)
             if recuperate > 8:
                 enemy.health += 2
+                print("The medic used a potion and recuperates 2 health points.")
             
-        elif enemy.character_name == "shadow":
-            print(f"The {enemy.name} does {self.power} damage to you.")
+        if enemy.character_name == "shadow":
+            print(f"The {enemy.name} does {enemy.power} damage to you.")
             damage = random.randint(1, 11)
             if damage > 9:
                 enemy.health -= self.power
             
-            
-
-        
 
 
     def print_status(self):
@@ -80,49 +78,53 @@ class Hero(Character):
 
 
 class Enemy(Character):
-    def __init__(self, name, health, power):
+    def __init__(self, name, health, power, bounty):
         self.name = name
+        self.bounty = bounty
         super(Enemy, self).__init__(name, health, power)
 
 
 class Goblin(Enemy):
-    def __init__(self, health, power):
+    def __init__(self, health, power, bounty):
         character_name = "goblin"
-        super(Goblin, self).__init__(character_name, health, power)
+        super(Goblin, self).__init__(character_name, health, power, bounty)
 
 
 class Shadow(Enemy):
-    def __init__(self, health, power):
+    def __init__(self, health, power, bounty):
         character_name = "shadow"
-        super(Shadow, self).__init__(character_name, health, power)
+        super(Shadow, self).__init__(character_name, health, power, bounty)
 
 
 class Medic(Enemy):
-    def __init__(self, health, power):
+    def __init__(self, health, power, bounty):
         character_name = "medic"
-        super(Medic, self).__init__(character_name, health, power)
+        super(Medic, self).__init__(character_name, health, power, bounty)
 
 
 class Zombie(Enemy):
-    def __init__(self, health, power):
+    def __init__(self, health, power, bounty):
         character_name = "zombie"
-        super(Zombie, self).__init__(character_name, health, power)
+        super(Zombie, self).__init__(character_name, health, power, bounty)
 
 
+class Werewolf(Enemy):
+    def __init__(self, health, power, bounty):
+        character_name = "werewolf"
+        super(Werewolf, self).__init__(character_name, health, power, bounty)
 
 
 
 #GAME
 
-
-goblin = Goblin(6, 2)
-medic = Medic(6, 2)
-shadow = Shadow(6, 4)
-zombie = Zombie(6, 1)
+hero = Hero(10, 5)
+goblin = Goblin(6, 2, 5)
+medic = Medic(6, 5, 5)
+shadow = Shadow(1, 4, 8)
+zombie = Zombie(6, 1, 10)
 
 def main(enemy):
     
-    hero = Hero(10, 5)
 
 
     while enemy.alive() and hero.alive():
@@ -139,7 +141,7 @@ def main(enemy):
             hero.attack(enemy)
             
             if not enemy.alive():
-                print(f"The {enemy.name} is dead.")
+                print(f"The {enemy.name} is dead. You collect {enemy.bounty} bounty coins!")
         elif raw_input == "2":
             pass
         elif raw_input == "3":
