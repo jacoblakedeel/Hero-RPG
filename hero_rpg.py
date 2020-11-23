@@ -1,10 +1,4 @@
-#!/usr/bin/env python
 
-# In this simple RPG game, the hero fights the goblin. He has the options to:
-
-# 1. fight goblin
-# 2. do nothing - in which case the goblin will attack him anyway
-# 3. flee
 
 import random
 
@@ -25,15 +19,16 @@ class Character:
             return False
 
     def attack(self, enemy):
-        if enemy.character_name != "zombie" or "shadow":
+        if enemy.character_name != "zombie":
             enemy.health -= self.power
-
-
+        if enemy.character_name != "shadow":
+            enemy.health -= self.power
+        
         if self.character_name == "hero":
             if hero.armor > 0:
                 hero.health += hero.armor
             double_damage = random.randint(1, 11)
-            if double_damage > 8:
+            if double_damage > 8 and enemy.character_name != "zombie":
                 enemy.health -= self.power
                 print(f"You did double damage to the {enemy.character_name}")
             else:
@@ -203,11 +198,12 @@ def main(enemy):
                     print("You are dead.")
 
         elif raw_input == "2":
-            pass
+            hero.health -= enemy.power
+            print(f"The {enemy.character_name} did {enemy.power} damage to you")
         elif raw_input == "3":
             print("Choose Item From Store")
             print("=" * 20)
-            print("1. Super Tonic - Restores Hero Health to 10. Price: 5 Coins")
+            print("1. Super Tonic - Restores Hero Health to 15. Price: 5 Coins")
             print("2. Armor - Adds 2 Armor Points. Price: 5 Coins")
             print("3. Evade - Makes Enemy Attacks Less Likely to Do Damage. Price: 2 Coins")
             print("4. Go back to main menu")
@@ -216,8 +212,8 @@ def main(enemy):
             store_input = input()
             if store_input == "1":
                 if hero.coins >= super_tonic.price:
-                    if hero.health < 10:
-                        hero.health = (10 - hero.health) + hero.health 
+                    if hero.health < 15:
+                        hero.health = (15 - hero.health) + hero.health 
                         hero.coins -= super_tonic.price
                         hero.print_status
                         
@@ -247,4 +243,4 @@ def main(enemy):
 
         
 
-main(werewolf)
+main(shadow)
