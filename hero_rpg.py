@@ -28,7 +28,10 @@ class Character:
         if enemy.character_name != "zombie" or "shadow":
             enemy.health -= self.power
 
+
         if self.character_name == "hero":
+            if hero.armor > 0:
+                hero.health += hero.armor
             double_damage = random.randint(1, 11)
             if double_damage > 8:
                 enemy.health -= self.power
@@ -38,6 +41,7 @@ class Character:
 
         if enemy.character_name == "goblin":
             print(f"The {enemy.character_name} does {self.power} damage to you.")
+            
 
         if enemy.character_name == "medic":
             print(f"The {enemy.name} does {enemy.power} damage to you.")
@@ -46,12 +50,29 @@ class Character:
                 enemy.health += 2
                 print("The medic used a potion and recuperates 2 health points.")
             
+            
         if enemy.character_name == "shadow":
             print(f"The {enemy.name} does {enemy.power} damage to you.")
             damage = random.randint(1, 11)
             if damage > 9:
                 enemy.health -= self.power
             
+
+        if enemy.character_name == "thief":
+            enemy.health -= hero.power
+            hero.coins -= 1
+            print(f"The {enemy.name} does {enemy.power} damage to you and stole one of your coins.")
+            
+            
+        if enemy.character_name == "werewolf":
+            enemy.health -= hero.power
+            transformation = random.randint(1, 51)
+            if transformation >= 45:
+                hero.health = 0
+                print("You have been transformed into a werewolf! GAME OVER!")
+            
+                
+                
 
 
     def print_status(self):
@@ -77,15 +98,15 @@ class Items:
     def super_tonic(self):
 
         if hero.coins >= self.price:
-            if hero.health < 10:
-                hero.health = (10 - hero.health) + hero.health 
+            if hero.health < 15:
+                hero.health = (15 - hero.health) + hero.health 
                 hero.coins -= self.price
                 hero.print_status
             else:
                 print("You are already at maximum health")
         else:
             print("Not enough coins to purchase.")
-
+            
 
 
 class Hero(Character):
@@ -97,7 +118,6 @@ class Hero(Character):
         self.armor = armor
         self.evade = evade
         super(Hero, self).__init__(character_name, health, power)
-
 
 
 class Enemy(Character):
@@ -137,29 +157,28 @@ class Werewolf(Enemy):
         super(Werewolf, self).__init__(character_name, health, power, bounty)
 
 
-class Wizard(Enemy):
+class Thief(Enemy):
     def __init__(self, health, power, bounty):
-        character_name = "wizard"
-        super(Wizard, self).__init__(character_name, health, power, bounty)
+        character_name = "thief"
+        super(Thief, self).__init__(character_name, health, power, bounty)
 
 #GAME
 
-hero = Hero(10, 5, 5, 2, 0)
-goblin = Goblin(6, 2, 5)
-medic = Medic(6, 5, 5)
+hero = Hero(15, 5, 5, 0, 0)
+goblin = Goblin(8, 2, 5)
+medic = Medic(10, 5, 5)
 shadow = Shadow(1, 4, 8)
-zombie = Zombie(6, 1, 10)
-wizard = Wizard(8, 6, 10)
+zombie = Zombie(1, 1, 10)
+thief = Thief(15, 1, 10)
+werewolf = Werewolf(20, 8, 20)
 
 # store = Store()
 super_tonic = Items(5)
 armor = Items(5)
-evade = Items(5)
+evade = Items(2)
 
 def main(enemy):
     
-
-
     while enemy.alive() and hero.alive():
         hero.print_status()
         enemy.print_status()
@@ -173,6 +192,8 @@ def main(enemy):
         raw_input = input()
         if raw_input == "1":
             hero.attack(enemy)
+            hero.print_status
+            enemy.print_status
             if not enemy.alive():
                 hero.coins += enemy.bounty
                 print(f"The {enemy.name} is dead. You collect {enemy.bounty} bounty coins!")
@@ -188,7 +209,8 @@ def main(enemy):
             print("=" * 20)
             print("1. Super Tonic - Restores Hero Health to 10. Price: 5 Coins")
             print("2. Armor - Adds 2 Armor Points. Price: 5 Coins")
-            print("3. Evade - Makes Enemy Attacks Less Likely to Do Damage. Price: 5 Coins")
+            print("3. Evade - Makes Enemy Attacks Less Likely to Do Damage. Price: 2 Coins")
+            print("4. Go back to main menu")
             print("")
             print("What would you like to purchase?")
             store_input = input()
@@ -208,10 +230,14 @@ def main(enemy):
                 if hero.coins >= armor.price:
                     hero.armor += 2
                     hero.coins -= armor.price
+                    
                 else:
                     print("Not enough coins to purchase.")
             elif store_input == "3":
-                pass
+                hero.evade += 2
+                hero.coins -= 2
+            elif store_input == "4":
+                main(enemy)
 
         elif raw_input == "4":
             print("Goodbye.")
@@ -221,4 +247,4 @@ def main(enemy):
 
         
 
-main(goblin)
+main(werewolf)
